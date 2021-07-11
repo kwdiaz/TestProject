@@ -1,0 +1,243 @@
+﻿
+@{
+    ViewBag.Title = "Grid";
+}
+
+<style type="text/css">
+    .avatar {
+        /* Center the content */
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        /* Used to position the content */
+        position: relative;
+        /* Colors */
+        background-color: rgba(0, 0, 0, .3);
+        color: #FFF;
+        /* Rounded border */
+        border-radius: 50%;
+        height: 48px;
+        width: 48px;
+    }
+
+    .avatar-letters {
+        /* Center the content */
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .avatar-ID {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 32px;
+        padding-left: 20px;
+    }
+</style>
+
+<h2>Grid</h2>
+
+<div id="alertEmployees" class="alert alert-info" role="alert">
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <div id="grid"></div>
+        <script>
+           
+
+            $(document).ready(function () {
+                $("#grid").kendoGrid({
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "/Grid/GridData",
+                                dataType: "json",
+                                contentType: 'application/json; charset=utf-8'
+                            }
+                        },
+                        schema: {
+                            model: {
+                                fields: {
+                                    FullName: { type: "string" },
+                                    EmployeeID: { type: "string" },
+                                    PhoneNumber: { type: "number" },
+                                    City: { type: "string" },
+                                    Salary: { type: "number" },
+                                    Country: { type: "string" }
+                                }
+                            }
+                        },
+                        pageSize: 5
+                    },
+                    height: 550,
+                    groupable: true,
+                    sortable: true,
+                    pageable: {
+                        refresh: true,
+                        pageSizes: true,
+                        buttonCount: 5
+                    },
+                    columns: [{
+
+                        template: `
+                                                <div style="width:50px; float:left;">
+                                                    <div  class='avatar'>
+                                                             <div class="avatar-letters">
+                                                               #:getInitials(FullName)#
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                 <div class="avatar-ID">
+                                                         <h4> #: FullName #</h4>
+                                                          <p>#: EmployeeID #</p>
+                                                 </div> `,
+
+                        field: "FullName",
+                        title: "Full Name",
+                        width: 240
+                    }, {
+
+                        field: "SIN",
+                        title: "SIN",
+                        template: '#=formatSIN(SIN)#'
+                    }, {
+
+                        field: "PhoneNumber",
+                        title: "Phone Number",
+                        template: "#=formatPhoneNumber(PhoneNumber)#"
+                    }, {
+                        field: "City",
+                        title: "City",
+                        template: '#=SetBadge(City)#'
+
+                    }, {
+
+                        field: "Salary",
+                        title: "Salary",
+                        format: '{0:0.00}' //decimal format
+                    }, {
+
+                        field: "Country",
+                        tittle: "Country",
+                        template: '#=SetColor(Country)#',
+                        width: 150
+                    }]
+                });
+
+
+
+            });
+
+
+            //TASK 2: function that get initials from FullName
+            function getInitials(name) {
+                let initials = name.split(' ');
+
+                if (initials.length > 1) {
+                    initials = initials.shift().charAt(0) + initials.pop().charAt(0);
+                } else {
+                    initials = name.substring(0, 2);
+                }
+
+                return initials.toUpperCase();
+            }
+            //TASK 2: function that put city in badge
+            function SetBadge(City) {
+                var count = 0;
+                if (City == "Mississauga")
+                    return '<span class="documentation k-badge k-badge-solid k-badge-primary k-badge-md k-badge-rounded k-badge-inline" data-role="badge">' + City + '</span> ';
+                else
+                    return City;
+            }
+
+            //find .documentation to put the theme
+            $('.documentation').kendoBadge({
+                themeColor: 'primary'
+            });
+
+
+
+
+            //count the numbre data
+            $.ajax({
+                url: "/Grid/GridData",
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    var count = 0;
+                    var city = "";
+                    for (var v of result) {
+                        if (v.City == "Mississauga") {
+                            city = v.City;
+                            count = count + 1;
+                        }
+
+                    }
+                    $('#alertEmployees').text(count + " Employees from " + city);
+
+
+
+
+                },
+                error: function () {
+                    alert("No");
+                }
+            });
+
+
+
+            //Regular expression to return phone number
+            function formatPhoneNumber(phoneNumber) {
+
+                var phoneNumberString = phoneNumber.toString();
+                var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+                var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+                if (match) {
+                    var intlCode = (match[1] ? '+1 ' : '');
+                    return [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
+                }
+                return null;
+            }
+
+
+            //Regular expression to return SIN
+
+            function formatSIN(SIN) {
+                var sinNumber = SIN.toString();
+                sinNumber = sinNumber.replace(/\D/g, '');
+                sinNumber = sinNumber.replace(/^(\d{3})/, '$1-');
+                sinNumber = sinNumber.replace(/-(\d{3})/, '-$1-');
+                sinNumber = sinNumber.replace(/(\d)-(\d{4}).*/, '$1-$2');
+                return sinNumber;
+            }
+
+
+            // Change color to country by condition
+            function SetColor(Country) {
+                if (Country == "Canada")
+                    return "<font color=\"red\">" + Country + "</font>";
+                else
+                    return Country;
+            }
+
+
+           
+
+
+        </script>
+
+
+    </div>
+
+
+
+
+
+
+</div>
+

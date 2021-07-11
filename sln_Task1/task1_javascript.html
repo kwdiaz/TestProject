@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Kevin Diaz - Test Project -->
+<html>
+    <head>
+        <title>Test Project - Task 1 Javascript</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, shrink-to-fit=no" />  <!-- This line is important to make responsive containers-->
+        <script src="https://kit.fontawesome.com/81b434e427.js" crossorigin="anonymous"></script> <!--icon library  -->
+        <link href="styles2.css" rel="stylesheet" />
+    </head>
+
+
+    <script>
+       
+        function check_div(j) {
+            debugger;
+           
+            const chechk_icon = document.getElementsByTagName("i");
+                for (let i = 0; i < chechk_icon.length; i++) {
+                    chechk_icon[i].style.visibility = "hidden";    
+                }
+            document.getElementById(j).style.visibility='visible';
+            document.getElementById(j).style.background='#59ec6d';
+
+        }
+
+
+    </script>
+
+
+<body>
+
+    <!-- Main Container -->
+    <div class="flex-container">
+        
+        <!-- child divs -->
+        <div id="item1" onclick="check_div('check1')">
+            <i id="check1" class="fas fa-check"></i>
+        </div>
+
+        <div id="item2" onclick="check_div('check2')">
+            <i id="check2" class="fas fa-check"></i>
+        </div>
+        <div id="item3" onclick="check_div('check3')">
+            <i id="check3" class="fas fa-check"></i>
+        </div>
+        <div id="item4" onclick="check_div('check4')">
+            <i id="check4" class="fas fa-check"></i>
+        </div>
+        <!-- child divs end  -->
+
+    </div>
+    
+    <!-- Main Container end -->
+
+
+
+</body>
+</html>

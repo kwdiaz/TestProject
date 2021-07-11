@@ -1,0 +1,50 @@
+*{
+    box-sizing: border-box;
+}
+
+/* Code for the main div container */
+.flex-container{
+    display: flex;
+    height: auto;
+    width: 100%;
+    flex-direction: row;/* align in row all div inside this container */ 
+    flex-flow : wrap;/* multilines*/ 
+    flex-wrap: wrap;
+    justify-content: space-around; /* first item on the start line and last item on the end line align*/ 
+    background-color: aquamarine;
+    padding: 75px;
+    border: 2px solid black;
+ 
+}
+
+/* Code for the child divs */
+.flex-container div {
+    background-color: gainsboro;
+    width: 300px;
+    height: 200px;
+    margin: 10px;
+    border: 2px solid black;
+ 
+
+}
+/* Controls if is tablet or phone screen property */
+@media screen and (max-width: 769px){
+
+
+    .flex-container div{
+        width:40%;
+        
+    }
+
+}
+
+@media screen and (max-width: 480px){
+  
+    .flex-container div{
+        width: 100%;
+        flex-basis: 100%;
+      
+        
+    }
+   
+}

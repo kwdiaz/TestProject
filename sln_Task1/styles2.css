@@ -1,0 +1,89 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: #ebfffb;
+    font-family: Arial;
+}
+
+/* Code for the main div container */
+.flex-container{
+    display: flex;
+    height: auto;
+    width: 100%; 
+    flex-direction: row;/* align in row all div inside this container */ 
+    flex-flow : wrap;/* multilines*/ 
+    flex-wrap: wrap;
+    justify-content: space-around; /* first item on the start line and last item on the end line align*/ 
+    background-color: rgb(235, 155, 179);
+    padding: 75px;
+    border: none;
+ 
+}
+
+/* Code for the child divs */
+.flex-container div {
+    
+    width: 300px;
+    height: 200px;
+    margin: 10px;
+    border: none;
+    text-align: center;
+    align-items: center;
+    cursor:pointer;
+    background: #6deebd;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    padding: 10px;
+
+}
+.flex-container div:hover {
+    background: #ebfffb;
+    box-shadow: 3px 3px 50px rgb(0,0,0,.15);
+    
+}
+
+
+
+i{
+    width: 35px;
+    height: 35px;
+    background: #6deebd;
+    border-radius: 10px;
+    border: none;
+    cursor:pointer;
+    color:#ebfffb;
+    float: right; 
+    vertical-align: middle;
+    font-size: 35px;
+    transition: .3s ease all;
+    visibility: hidden;
+}
+
+
+
+
+/* Controls if is tablet or phone screen property */
+@media screen and (max-width: 769px){
+
+
+    .flex-container div{
+        width:40%;
+        
+    }
+
+}
+
+@media screen and (max-width: 480px){
+  
+    .flex-container div{
+        width: 100%;
+        flex-basis: 100%;
+      
+        
+    }
+   
+}
